@@ -178,6 +178,10 @@ else
         $(LOCAL_PATH)/config/init.sony-platform.rc:root/init.sony-platform.rc
 endif
 
+# Device specific part for two-stage boot
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/recovery/bootrec-device:recovery/bootrec-device
+
 # USB
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
@@ -207,4 +211,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     busybox
 
+# TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/twrp.fstab:recovery/root/etc/twrp.fstab
+	
+# Post recovery script
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh \
+    $(LOCAL_PATH)/recovery/rebootrecovery.sh:recovery/root/sbin/rebootrecovery.sh
+	
+# Extract recovery ramdisks
+PRODUCT_PACKAGES += \
+    extract_elf_ramdisk
+	
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
